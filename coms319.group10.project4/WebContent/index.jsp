@@ -12,6 +12,11 @@
     <body>
         <h1>Web based tron</h1>
         <div class="col-md-offset-1">
+        <h2>Players</h2>
+        <ul id="playerList">
+        </ul>
+        </div>
+        <div class="col-md-offset-1">
           <canvas id="myCanvas" width="800" height="800" style="border:1px solid #000000;"></canvas><br><br>
           <button type="button" class="btn btn-success" onclick="startGame()">Start Game</button>
           <button type="button" class="btn btn-danger" onclick="pauseGame()">Pause Game</button>

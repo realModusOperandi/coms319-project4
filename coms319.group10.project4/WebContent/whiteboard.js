@@ -85,6 +85,10 @@ function drawImageBinary(blob) {
     img.src = canvas.toDataURL();
 }
 
+function updatePlayerList(){
+	$("#playerList").html("<li>Some stuff</li>");
+}
+
 function startGame(){
 	sendText(JSON.stringify({"message":"GAME_START"}));
 }

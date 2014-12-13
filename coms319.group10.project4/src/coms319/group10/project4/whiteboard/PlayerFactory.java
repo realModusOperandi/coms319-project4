@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package coms319.group10.project4.whiteboard;
 
@@ -9,7 +9,7 @@ import coms319.group10.project4.whiteboard.Player.DIRECTION;
 
 /**
  * @author Andrew
- * 
+ *
  */
 public class PlayerFactory {
 
@@ -38,6 +38,7 @@ public class PlayerFactory {
         PlayerData data = startingData[g.players.size()];
         Player p = new Player(client, data.color, data.x, data.y);
         p.direction = data.dir;
+        p.playerNo = g.players.size() + 1;
         return p;
     }
 }

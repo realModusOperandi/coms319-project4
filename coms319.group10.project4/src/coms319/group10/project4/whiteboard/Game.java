@@ -29,11 +29,13 @@ public class Game extends Thread
     public void addPlayer(Player p) {
         players.add(p);
         System.out.println("Player " + players.size() + " has joined.");
+        broadcastPlayerList(this, players);
     }
 
     public void removePlayer(Player p) {
         players.remove(p);
         System.out.println("Player disconnected.");
+        broadcastPlayerList(this, players);
     }
 
     @Override
@@ -65,6 +67,21 @@ public class Game extends Thread
         for (Player player : g.players) {
             try {
                 player.client.getBasicRemote().sendText(json);
+            } catch (IOException e) {
+                // ignore
+            }
+        }
+    }
+
+    private void broadcastPlayerList(Game g, Set<Player> players) {
+        String playerList = "{";
+        for (Player p : players)
+            playerList += "\"player" + p.playerNo + "\":" + "\"" + p.playerStatus + "\",";
+        playerList += "\"playerlist\":\"true\"}";
+
+        for (Player player : g.players) {
+            try {
+                player.client.getBasicRemote().sendText(playerList);
             } catch (IOException e) {
                 // ignore
             }

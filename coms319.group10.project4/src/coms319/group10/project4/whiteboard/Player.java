@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package coms319.group10.project4.whiteboard;
 
@@ -20,10 +20,11 @@ public class Player {
     public static final int PLAYER_SIZE = 10;
     public Session client;
     public final String color;
-    boolean alive = true;
     DIRECTION direction = DIRECTION.RIGHT;
     int x;
     int y;
+    int playerNo;
+    String playerStatus = "Connected";
 
     public Player(Session client, String color) {
         this.color = color;

@@ -18,7 +18,11 @@ function sendBinary(bytes) {
 function onMessage(evt) {
     console.log("received: " + evt.data);
     if (typeof evt.data == "string") {
-        drawImageText(evt.data);
+    	var json = JSON.parse(evt.data);
+    	if(json.playerlist)
+    		updatePlayerList(json);
+    	else
+    		drawImageText(evt.data);
     } else {
         drawImageBinary(evt.data);
     }
