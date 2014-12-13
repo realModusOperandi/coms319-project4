@@ -17,7 +17,7 @@
         </ul>
         </div>
         <div class="col-md-offset-1">
-          <canvas id="myCanvas" width="800" height="800" style="border:1px solid #000000;"></canvas><br><br>
+          <canvas id="myCanvas" width="600" height="600" style="border:1px solid #000000;"></canvas><br><br>
           <button type="button" class="btn btn-success" onclick="startGame()">Start Game</button>
           <button type="button" class="btn btn-danger" onclick="pauseGame()">Pause Game</button>
         </div>

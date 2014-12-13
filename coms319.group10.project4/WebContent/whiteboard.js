@@ -64,7 +64,7 @@ function drawImageText(image) {
         break;
     case "square":
     default:
-        context.fillRect(json.coords.x, json.coords.y, 10, 10);
+        context.fillRect(json.coords.x, json.coords.y, 5, 5);
         break;
     }
 }

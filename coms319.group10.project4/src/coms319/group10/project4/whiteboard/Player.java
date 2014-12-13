@@ -17,7 +17,7 @@ public class Player {
         RIGHT
     }
 
-    public static final int PLAYER_SIZE = 10;
+    public static final int PLAYER_SIZE = 5;
     public Session client;
     public final String color;
     DIRECTION direction = DIRECTION.RIGHT;

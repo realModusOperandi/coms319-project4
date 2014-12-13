@@ -14,8 +14,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class Game extends Thread
 {
     private static Game instance = new Game();
-    public static final int GAME_SIZE = 800;
-    public static final int GAME_SPEED = 75;
+    public static final int GAME_SIZE = 600;
+    public static final int GAME_SPEED = 50;
     Set<Player> players = new HashSet<>();
     AtomicBoolean gameRunning = new AtomicBoolean(false);
     AtomicBoolean paused = new AtomicBoolean(false);
