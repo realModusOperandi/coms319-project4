@@ -29,6 +29,8 @@ public class WebsocketHandler {
 
     @OnClose
     public void onClose(Session peer) {
+        Game game = Game.getGame();
+        game.removePlayer(clients.get(peer));
         clients.remove(peer);
     }
 

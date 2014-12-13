@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package coms319.group10.project4.whiteboard;
 
@@ -29,6 +29,11 @@ public class Game extends Thread
     public void addPlayer(Player p) {
         players.add(p);
         System.out.println("Player " + players.size() + " has joined.");
+    }
+
+    public void removePlayer(Player p) {
+        players.remove(p);
+        System.out.println("Player disconnected.");
     }
 
     @Override
