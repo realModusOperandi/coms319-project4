@@ -78,11 +78,6 @@ function drawImageBinary(blob) {
         imageData.data[i] = bytes[i];
     }
     context.putImageData(imageData, 0, 0);
-    
-    var img = document.createElement('img');
-    img.height = canvas.height;
-    img.width = canvas.width;
-    img.src = canvas.toDataURL();
 }
 
 function updatePlayerList(json){
