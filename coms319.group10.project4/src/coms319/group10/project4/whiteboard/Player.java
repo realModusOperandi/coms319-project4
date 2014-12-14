@@ -19,16 +19,23 @@ public class Player {
         RIGHT
     }
 
+    public static enum STATUS {
+        Connected,
+        Alive,
+        Dead,
+        Disconnected
+    }
+
     public static final int PLAYER_SIZE = 5;
     public final Game game;
     public Session client;
     public final String color;
-    DIRECTION direction = DIRECTION.RIGHT;
-    int x;
-    int y;
-    int playerNo;
-    boolean isAlive = true;
-    String playerStatus = "Connected";
+    public DIRECTION direction = DIRECTION.RIGHT;
+    public int x;
+    public int y;
+    public String playerName;
+    public boolean isAlive = true;
+    private STATUS playerStatus = STATUS.Connected;
 
     public Player(Game g, Session client, String color) {
         this.game = g;
@@ -67,7 +74,7 @@ public class Player {
         boolean checkResult = checkPosition(x, y);
         if (!checkResult) {
             isAlive = false;
-            playerStatus = "Dead";
+            setStatus(STATUS.Dead);
         }
         return checkResult;
     }
@@ -112,5 +119,14 @@ public class Player {
 
     public void disconnect() {
         this.client = null;
+        setStatus(STATUS.Disconnected);
+    }
+
+    public void setStatus(STATUS newState) {
+        this.playerStatus = newState;
+    }
+
+    public STATUS getStatus() {
+        return this.playerStatus;
     }
 }

@@ -13,6 +13,8 @@ import javax.json.Json;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 
+import coms319.group10.project4.whiteboard.Player.STATUS;
+
 /**
  * @author Andrew
  */
@@ -46,9 +48,8 @@ public class Game extends Thread
     }
 
     public void removePlayer(Player p) {
-        p.playerStatus = "Disconnected";
         p.disconnect();
-        System.out.println("Player " + p.playerNo + " disconnected.");
+        System.out.println(p.playerName + " disconnected.");
         broadcastPlayerList(this, players);
     }
 
@@ -94,8 +95,8 @@ public class Game extends Thread
         JsonArrayBuilder array = Json.createArrayBuilder();
         for (Player p : players) {
             array.add(Json.createObjectBuilder()
-                            .add("name", "player " + p.playerNo)
-                            .add("status", p.playerStatus)
+                            .add("name", p.playerName)
+                            .add("status", p.getStatus().toString())
                             .add("color", p.color));
         }
         JsonObject obj = Json.createObjectBuilder().add("playerlist", array).build();
@@ -108,8 +109,8 @@ public class Game extends Thread
     public void startGame() {
         paused.set(false);
         for (Player p : players)
-            if ("Connected".equals(p.playerStatus))
-                p.playerStatus = "Alive";
+            if (STATUS.Connected == p.getStatus())
+                p.setStatus(STATUS.Alive);
         broadcastPlayerList(this, players);
         if (!gameRunning.get())
             this.start();

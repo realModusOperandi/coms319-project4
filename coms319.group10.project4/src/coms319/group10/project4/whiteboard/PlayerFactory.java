@@ -38,7 +38,7 @@ public class PlayerFactory {
         PlayerData data = startingData[g.players.size()];
         Player p = new Player(g, client, data.color, data.x, data.y);
         p.direction = data.dir;
-        p.playerNo = g.players.size() + 1;
+        p.playerName = "Player " + (g.players.size() + 1);
         return p;
     }
 }
