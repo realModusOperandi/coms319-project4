@@ -62,6 +62,7 @@ public class Player {
         boolean checkResult = checkPosition(x, y);
         if (!checkResult) {
             isAlive = false;
+            playerStatus = "Dead";
         }
         return checkResult;
     }
