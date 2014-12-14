@@ -21,20 +21,27 @@ public class Game extends Thread
     private static Game instance = new Game();
     public static final int GAME_SIZE = 600;
     public static final int GAME_SPEED = 50;
-    public static boolean[][] board = new boolean[121][121];
+    public boolean[][] board = new boolean[121][121];
     Set<Player> players = Collections.synchronizedSet(new HashSet<Player>());
     AtomicBoolean gameRunning = new AtomicBoolean(false);
     AtomicBoolean paused = new AtomicBoolean(false);
 
     private Game() {}
 
-    public static Game getGame() {
-        return instance;
+    public static Game getUnstartedGame() {
+        if (!instance.gameRunning.get() && instance.players.size() < 4)
+            return instance;
+        else {
+            instance = new Game();
+            return instance;
+        }
     }
 
     public void addPlayer(Player p) {
         players.add(p);
         System.out.println("Player " + players.size() + " has joined.");
+        for (Player cur : players)
+            broadcastLocation(this, cur);
         broadcastPlayerList(this, players);
     }
 
@@ -59,7 +66,7 @@ public class Game extends Thread
                 for (Player p : players) {
                     if (p.isAlive) {
                         if (p.movePlayer()) {
-                            broadcastMove(this, p);
+                            broadcastLocation(this, p);
                         } else {
                             broadcastPlayerList(this, players);
                         }
@@ -77,7 +84,7 @@ public class Game extends Thread
         }
     }
 
-    private void broadcastMove(Game g, Player p) {
+    private void broadcastLocation(Game g, Player p) {
         String json = p.toJson();
         for (Player player : g.players)
             player.sendTextToClient(json);

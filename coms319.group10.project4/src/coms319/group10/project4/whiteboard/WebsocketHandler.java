@@ -21,7 +21,7 @@ public class WebsocketHandler {
 
     @OnOpen
     public void onOpen(Session client) {
-        Game game = Game.getGame();
+        Game game = Game.getUnstartedGame();
         Player p = PlayerFactory.initNextPlayer(game, client);
         clients.put(client, p);
         game.addPlayer(p);
@@ -29,7 +29,7 @@ public class WebsocketHandler {
 
     @OnClose
     public void onClose(Session peer) {
-        Game game = Game.getGame();
+        Game game = clients.get(peer).game;
         game.removePlayer(clients.get(peer));
         clients.remove(peer);
     }
@@ -41,10 +41,10 @@ public class WebsocketHandler {
 
         if (json.containsKey("message")) {
             if (json.getString("message").equals("GAME_START")) {
-                Game.getGame().startGame();
+                clients.get(session).game.startGame();
             }
             if (json.getString("message").equals("GAME_PAUSE")) {
-                Game.getGame().pause();
+                clients.get(session).game.pause();
                 System.out.println("Stopped the game");
             }
         }
