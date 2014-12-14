@@ -85,8 +85,25 @@ function drawImageBinary(blob) {
     img.src = canvas.toDataURL();
 }
 
-function updatePlayerList(){
-	$("#playerList").html("<li>Some stuff</li>");
+function updatePlayerList(json){
+	console.log("in update playerlist");
+	var list = "<li class='list-group-item active'>Players</li>";
+	for(i in json.playerlist){
+		var player = json.playerlist[i];
+		list += "<li class='list-group-item'><font color='" + player.color + "' size='5'>" + player.name + "</font>  :  " + getStatus(player.status) + "</li>";
+	}
+	$("#playerList").html(list);
+}
+
+function getStatus(status){
+	if(status === "Connected")
+		return "<span class='label label-primary'>Connected</span>";
+	if(status === "Alive")
+		return "<span class='label label-success'>Alive</span>";
+	if(status === "Dead")
+		return "<span class='label label-danger'>Dead</span>";
+	if(status === "Disconnected")
+		return "<span class='label label-default'>Disconnected</span>";
 }
 
 function startGame(){

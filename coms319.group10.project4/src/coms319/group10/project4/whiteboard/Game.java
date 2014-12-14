@@ -5,9 +5,14 @@ package coms319.group10.project4.whiteboard;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
+
+import javax.json.Json;
+import javax.json.JsonArrayBuilder;
+import javax.json.JsonObject;
 
 /**
  * @author Andrew
@@ -18,7 +23,7 @@ public class Game extends Thread
     public static final int GAME_SIZE = 600;
     public static final int GAME_SPEED = 50;
     public static boolean[][] board = new boolean[121][121];
-    Set<Player> players = new HashSet<>();
+    Set<Player> players = Collections.synchronizedSet(new HashSet<Player>());
     AtomicBoolean gameRunning = new AtomicBoolean(false);
     AtomicBoolean paused = new AtomicBoolean(false);
 
@@ -84,14 +89,19 @@ public class Game extends Thread
     }
 
     private void broadcastPlayerList(Game g, Set<Player> players) {
-        String playerList = "{";
-        for (Player p : players)
-            playerList += "\"player" + p.playerNo + "\":" + "\"" + p.playerStatus + "\",";
-        playerList += "\"playerlist\":\"true\"}";
+        JsonArrayBuilder array = Json.createArrayBuilder();
+        for (Player p : players) {
+            array.add(Json.createObjectBuilder()
+                            .add("name", "player " + p.playerNo)
+                            .add("status", p.playerStatus)
+                            .add("color", p.color));
+        }
+        JsonObject obj = Json.createObjectBuilder().add("playerlist", array).build();
+        System.out.println("Playerlist: " + obj.toString());
 
         for (Player player : g.players) {
             try {
-                player.client.getBasicRemote().sendText(playerList);
+                player.client.getBasicRemote().sendText(obj.toString());
             } catch (IOException e) {
                 // ignore
             }
@@ -100,6 +110,10 @@ public class Game extends Thread
 
     public void startGame() {
         paused.set(false);
+        for (Player p : players)
+            if ("Connected".equals(p.playerStatus))
+                p.playerStatus = "Alive";
+        broadcastPlayerList(this, players);
         if (!gameRunning.get())
             this.start();
     }
