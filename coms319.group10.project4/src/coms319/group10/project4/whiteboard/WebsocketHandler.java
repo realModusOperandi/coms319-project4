@@ -20,12 +20,7 @@ public class WebsocketHandler {
     private static final ConcurrentMap<Session, Player> clients = new ConcurrentHashMap<>();
 
     @OnOpen
-    public void onOpen(Session client) {
-        Game game = Game.getUnstartedGame();
-        Player p = PlayerFactory.initNextPlayer(game, client);
-        clients.put(client, p);
-        game.addPlayer(p);
-    }
+    public void onOpen(Session session) {}
 
     @OnClose
     public void onClose(Session peer) {
@@ -48,7 +43,7 @@ public class WebsocketHandler {
                 System.out.println("Stopped the game");
             }
         }
-        if (json.containsKey("direction")) {
+        else if (json.containsKey("direction")) {
             Player p = clients.get(session);
             Player.DIRECTION curDir = p.getDrirection();
             String noGo;
@@ -65,6 +60,12 @@ public class WebsocketHandler {
             if (!noGo.equalsIgnoreCase(json.getString("direction"))) {
                 p.setDirection(json.getString("direction"));
             }
+        }
+        else if (json.containsKey("playerjoined")) {
+            Game game = Game.getUnstartedGame();
+            Player p = PlayerFactory.initNextPlayer(game, session, json.getString("playerjoined"));
+            clients.put(session, p);
+            game.addPlayer(p);
         }
     }
 }

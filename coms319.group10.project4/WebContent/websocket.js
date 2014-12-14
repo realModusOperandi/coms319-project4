@@ -1,9 +1,10 @@
-var wsUri = "ws://" + document.location.hostname + ":" + document.location.port + document.location.pathname + "websocket";
+var wsUri = "ws://" + document.location.hostname + ":" + document.location.port + "/coms319.group10.project4/websocket";
 var websocket = new WebSocket(wsUri);
 websocket.binaryType = "arraybuffer";
 var output = document.getElementById("output");
-websocket.onmessage = function(evt) { onMessage(evt) };
-websocket.onerror = function(evt) { onError(evt) };
+websocket.onmessage = function(evt) { onMessage(evt); };
+websocket.onerror = function(evt) { onError(evt); };
+websocket.onopen = function(evt) { onConnect(evt); };
 
 function sendText(json) {
     console.log("sending text: " + json);
@@ -30,6 +31,11 @@ function onMessage(evt) {
 
 function onError(evt) {
     writeToScreen('<span style="color: red;">ERROR:</span> ' + evt.data);
+}
+
+function onConnect(evt){
+	var name = localStorage.getItem("username");
+	sendText(JSON.stringify({"playerjoined":name}));
 }
 
 function writeToScreen(message) {

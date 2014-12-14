@@ -73,7 +73,6 @@ public class Player {
         }
         boolean checkResult = checkPosition(x, y);
         if (!checkResult) {
-            isAlive = false;
             setStatus(STATUS.Dead);
         }
         return checkResult;
@@ -123,6 +122,8 @@ public class Player {
     }
 
     public void setStatus(STATUS newState) {
+        if (newState == STATUS.Dead)
+            this.isAlive = false;
         this.playerStatus = newState;
     }
 

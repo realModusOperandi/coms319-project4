@@ -34,11 +34,11 @@ public class PlayerFactory {
 
     private static final PlayerData[] startingData = new PlayerData[] { PlayerData.START_1, PlayerData.START_2, PlayerData.START_3, PlayerData.START_4 };
 
-    public static Player initNextPlayer(Game g, Session client) {
+    public static Player initNextPlayer(Game g, Session client, String name) {
         PlayerData data = startingData[g.players.size()];
         Player p = new Player(g, client, data.color, data.x, data.y);
         p.direction = data.dir;
-        p.playerName = "Player " + (g.players.size() + 1);
+        p.playerName = name;
         return p;
     }
 }
