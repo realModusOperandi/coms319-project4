@@ -92,8 +92,8 @@ function updatePlayerList(json){
 function getStatus(status){
 	if(status === "Connected")
 		return "<span class='label label-primary'>Connected</span>";
-	if(status === "Alive")
-		return "<span class='label label-success'>Alive</span>";
+	if(status === "Alive" || status === "Winner")
+		return "<span class='label label-success'>"+status+"</span>";
 	if(status === "Dead")
 		return "<span class='label label-danger'>Dead</span>";
 	if(status === "Disconnected")

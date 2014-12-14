@@ -44,7 +44,7 @@ public class WebsocketHandler {
             }
             if (json.getString("message").equals("GAME_REQUEUE")) {
                 Player p = clients.get(session);
-                Game.createGame();
+                Game.getUnstartedGame();
                 JsonObject obj = Json.createObjectBuilder().add("requeue", "requeue").build();
                 p.sendTextToClient(obj.toString());
             }

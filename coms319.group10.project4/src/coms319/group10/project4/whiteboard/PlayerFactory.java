@@ -14,10 +14,10 @@ import coms319.group10.project4.whiteboard.Player.DIRECTION;
 public class PlayerFactory {
 
     private enum PlayerData {
-        START_1("#FF0000", 50, 50, DIRECTION.RIGHT),
-        START_2("#0000FF", 50, Game.GAME_SIZE - 50, DIRECTION.UP),
-        START_3("#00FF00", Game.GAME_SIZE - 50, 50, DIRECTION.DOWN),
-        START_4("#FF00FF", Game.GAME_SIZE - 50, Game.GAME_SIZE - 50, DIRECTION.LEFT);
+        START_1("#DF740C", 50, 50, DIRECTION.RIGHT),
+        START_2("#FFE64D", 50, Game.GAME_SIZE - 50, DIRECTION.UP),
+        START_3("#6FC3DF", Game.GAME_SIZE - 50, 50, DIRECTION.DOWN),
+        START_4("#FF0000", Game.GAME_SIZE - 50, Game.GAME_SIZE - 50, DIRECTION.LEFT);
 
         public final String color;
         public final int x;

@@ -14,7 +14,7 @@
 			<div class="panel-heading"><h1>Web Based Tron</h1></div>
 			<div class="panel-body">
 				<div class="col-md-8" style="display:inline-block">
-					<canvas id="myCanvas" width="600" height="600" style="border:1px solid #000000;"></canvas><br><br>
+					<canvas id="myCanvas" width="600" height="600" style="border:1px solid #000000; background:url('images/tron_floor.jpg')"></canvas><br><br>
 				</div>
 				<ul id="playerList" class='list-group col-md-4 ' style="display:inline-block">
 				</ul>

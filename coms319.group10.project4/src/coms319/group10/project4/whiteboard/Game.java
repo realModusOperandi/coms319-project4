@@ -39,11 +39,6 @@ public class Game extends Thread
         }
     }
 
-    public static Game createGame() {
-        instance = new Game();
-        return instance;
-    }
-
     public void addPlayer(Player p) {
         players.add(p);
         System.out.println("Player " + players.size() + " has joined.");
@@ -74,6 +69,8 @@ public class Game extends Thread
                         if (p.movePlayer()) {
                             broadcastLocation(this, p);
                         } else {
+                            // Since someone died, check for winning player
+                            checkForWinner(p);
                             broadcastPlayerList(this, players);
                         }
                     }
@@ -109,6 +106,21 @@ public class Game extends Thread
 
         for (Player player : g.players)
             player.sendTextToClient(obj.toString());
+    }
+
+    private void checkForWinner(Player dead) {
+        if (players.size() < 2) // 1 player game, no winner
+            return;
+        int alivePlayers = 0;
+        Player alive = null;
+        for (Player cur : players) {
+            if (cur.isAlive) {
+                alivePlayers++;
+                alive = cur;
+            }
+        }
+        if (alivePlayers == 1)
+            alive.setStatus(STATUS.Winner);
     }
 
     public void startGame() {

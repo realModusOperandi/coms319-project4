@@ -23,6 +23,7 @@ public class Player {
         Connected,
         Alive,
         Dead,
+        Winner,
         Disconnected
     }
 
@@ -122,6 +123,8 @@ public class Player {
     public void setStatus(STATUS newState) {
         if (newState == STATUS.Dead)
             this.isAlive = false;
+        if (newState == STATUS.Dead && this.playerStatus == STATUS.Winner)
+            return; // Winning player can't die (game is over)
         this.playerStatus = newState;
     }
 
