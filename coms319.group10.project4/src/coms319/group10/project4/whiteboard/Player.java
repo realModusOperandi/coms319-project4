@@ -3,6 +3,8 @@
  */
 package coms319.group10.project4.whiteboard;
 
+import java.io.IOException;
+
 import javax.websocket.Session;
 
 /**
@@ -93,5 +95,19 @@ public class Player {
         if (realYPosition == Game.GAME_SIZE / PLAYER_SIZE + 1 || realXPosition == Game.GAME_SIZE / PLAYER_SIZE + 1)
             return true;
         return Game.board[realXPosition][realYPosition];
+    }
+
+    public void sendTextToClient(String message) {
+        if (client != null) {
+            try {
+                client.getBasicRemote().sendText(message);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void disconnect() {
+        this.client = null;
     }
 }

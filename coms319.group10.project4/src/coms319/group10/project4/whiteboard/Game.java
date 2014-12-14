@@ -3,7 +3,6 @@
  */
 package coms319.group10.project4.whiteboard;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
@@ -40,8 +39,9 @@ public class Game extends Thread
     }
 
     public void removePlayer(Player p) {
-        players.remove(p);
-        System.out.println("Player disconnected.");
+        p.playerStatus = "Disconnected";
+        p.disconnect();
+        System.out.println("Player " + p.playerNo + " disconnected.");
         broadcastPlayerList(this, players);
     }
 
@@ -79,13 +79,8 @@ public class Game extends Thread
 
     private void broadcastMove(Game g, Player p) {
         String json = p.toJson();
-        for (Player player : g.players) {
-            try {
-                player.client.getBasicRemote().sendText(json);
-            } catch (IOException e) {
-                // ignore
-            }
-        }
+        for (Player player : g.players)
+            player.sendTextToClient(json);
     }
 
     private void broadcastPlayerList(Game g, Set<Player> players) {
@@ -99,13 +94,8 @@ public class Game extends Thread
         JsonObject obj = Json.createObjectBuilder().add("playerlist", array).build();
         System.out.println("Playerlist: " + obj.toString());
 
-        for (Player player : g.players) {
-            try {
-                player.client.getBasicRemote().sendText(obj.toString());
-            } catch (IOException e) {
-                // ignore
-            }
-        }
+        for (Player player : g.players)
+            player.sendTextToClient(obj.toString());
     }
 
     public void startGame() {
