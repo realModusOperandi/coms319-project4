@@ -24,6 +24,7 @@ public class Player {
     int x;
     int y;
     int playerNo;
+    boolean isAlive = true;
     String playerStatus = "Connected";
 
     public Player(Session client, String color) {
@@ -38,7 +39,8 @@ public class Player {
         y = ystart;
     }
 
-    public void movePlayer() {
+    public boolean movePlayer() {
+        Game.board[x / PLAYER_SIZE][y / PLAYER_SIZE] = false;
         switch (direction) {
             case UP:
                 if (y - PLAYER_SIZE >= 0)
@@ -57,6 +59,11 @@ public class Player {
                     x -= PLAYER_SIZE;
                 break;
         }
+        boolean checkResult = checkPosition(x, y);
+        if (!checkResult) {
+            isAlive = false;
+        }
+        return checkResult;
     }
 
     public String toJson() {
@@ -73,5 +80,17 @@ public class Player {
 
     public void setDirection(String dir) {
         direction = DIRECTION.valueOf(dir);
+    }
+
+    public DIRECTION getDrirection() {
+        return direction;
+    }
+
+    private static boolean checkPosition(int x, int y) {
+        int realXPosition = x / PLAYER_SIZE;
+        int realYPosition = y / PLAYER_SIZE;
+        if (realYPosition == Game.GAME_SIZE / PLAYER_SIZE + 1 || realXPosition == Game.GAME_SIZE / PLAYER_SIZE + 1)
+            return true;
+        return Game.board[realXPosition][realYPosition];
     }
 }

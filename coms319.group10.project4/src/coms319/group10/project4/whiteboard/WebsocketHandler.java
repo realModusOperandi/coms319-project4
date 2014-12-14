@@ -50,7 +50,21 @@ public class WebsocketHandler {
         }
         if (json.containsKey("direction")) {
             Player p = clients.get(session);
-            p.setDirection(json.getString("direction"));
+            Player.DIRECTION curDir = p.getDrirection();
+            String noGo;
+            if (curDir == Player.DIRECTION.UP) {
+                noGo = "down";
+            } else if (curDir == Player.DIRECTION.RIGHT) {
+                noGo = "left";
+            } else if (curDir == Player.DIRECTION.DOWN) {
+                noGo = "up";
+            } else {
+                noGo = "right";
+            }
+
+            if (!noGo.equalsIgnoreCase(json.getString("direction"))) {
+                p.setDirection(json.getString("direction"));
+            }
         }
     }
 }

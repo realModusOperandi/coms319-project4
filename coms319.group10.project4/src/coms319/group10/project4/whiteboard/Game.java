@@ -4,6 +4,7 @@
 package coms319.group10.project4.whiteboard;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -16,6 +17,7 @@ public class Game extends Thread
     private static Game instance = new Game();
     public static final int GAME_SIZE = 600;
     public static final int GAME_SPEED = 50;
+    public static boolean[][] board = new boolean[121][121];
     Set<Player> players = new HashSet<>();
     AtomicBoolean gameRunning = new AtomicBoolean(false);
     AtomicBoolean paused = new AtomicBoolean(false);
@@ -40,6 +42,9 @@ public class Game extends Thread
 
     @Override
     public void run() {
+        for (int i = 0; i < GAME_SIZE / Player.PLAYER_SIZE + 1; i++) {
+            Arrays.fill(board[i], true);
+        }
         gameRunning.set(true);
         System.out.println("Game started");
 
@@ -47,8 +52,13 @@ public class Game extends Thread
             while (!paused.get()) {
                 delay(GAME_SPEED);
                 for (Player p : players) {
-                    p.movePlayer();
-                    broadcastMove(this, p);
+                    if (p.isAlive) {
+                        if (p.movePlayer()) {
+                            broadcastMove(this, p);
+                        } else {
+                            broadcastPlayerList(this, players);
+                        }
+                    }
                 }
             }
             delay(500); // don't thrash for pausing
