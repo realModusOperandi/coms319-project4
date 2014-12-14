@@ -3,6 +3,8 @@
  */
 package coms319.group10.project4.whiteboard;
 
+import java.io.IOException;
+
 import javax.websocket.Session;
 
 /**
@@ -18,6 +20,7 @@ public class Player {
     }
 
     public static final int PLAYER_SIZE = 5;
+    public final Game game;
     public Session client;
     public final String color;
     DIRECTION direction = DIRECTION.RIGHT;
@@ -27,12 +30,14 @@ public class Player {
     boolean isAlive = true;
     String playerStatus = "Connected";
 
-    public Player(Session client, String color) {
+    public Player(Game g, Session client, String color) {
+        this.game = g;
         this.color = color;
         this.client = client;
     }
 
-    public Player(Session client, String color, int xstart, int ystart) {
+    public Player(Game g, Session client, String color, int xstart, int ystart) {
+        this.game = g;
         this.color = color;
         this.client = client;
         x = xstart;
@@ -40,7 +45,7 @@ public class Player {
     }
 
     public boolean movePlayer() {
-        Game.board[x / PLAYER_SIZE][y / PLAYER_SIZE] = false;
+        game.board[x / PLAYER_SIZE][y / PLAYER_SIZE] = false;
         switch (direction) {
             case UP:
                 if (y - PLAYER_SIZE >= 0)
@@ -87,9 +92,23 @@ public class Player {
         return direction;
     }
 
-    private static boolean checkPosition(int x, int y) {
+    private boolean checkPosition(int x, int y) {
         int realXPosition = x / PLAYER_SIZE;
         int realYPosition = y / PLAYER_SIZE;
-        return Game.board[realXPosition][realYPosition];
+        return game.board[realXPosition][realYPosition];
+    }
+
+    public void sendTextToClient(String message) {
+        if (client != null) {
+            try {
+                client.getBasicRemote().sendText(message);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void disconnect() {
+        this.client = null;
     }
 }

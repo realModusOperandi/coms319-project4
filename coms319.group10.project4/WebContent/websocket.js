@@ -19,10 +19,13 @@ function onMessage(evt) {
     console.log("received: " + evt.data);
     if (typeof evt.data == "string") {
     	var json = JSON.parse(evt.data);
-    	if(json.playerlist)
+    	if(json.playerlist){
     		updatePlayerList(json);
-    	else
+    	}else if(json.requeue) {
+    		location.reload();
+    	}else {
     		drawImageText(evt.data);
+		}
     } else {
         drawImageBinary(evt.data);
     }

@@ -9,7 +9,7 @@ import coms319.group10.project4.whiteboard.Player.DIRECTION;
 
 /**
  * @author Andrew
- *
+ * 
  */
 public class PlayerFactory {
 
@@ -36,7 +36,7 @@ public class PlayerFactory {
 
     public static Player initNextPlayer(Game g, Session client) {
         PlayerData data = startingData[g.players.size()];
-        Player p = new Player(client, data.color, data.x, data.y);
+        Player p = new Player(g, client, data.color, data.x, data.y);
         p.direction = data.dir;
         p.playerNo = g.players.size() + 1;
         return p;

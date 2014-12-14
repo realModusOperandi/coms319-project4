@@ -3,7 +3,6 @@
  */
 package coms319.group10.project4.whiteboard;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
@@ -22,26 +21,39 @@ public class Game extends Thread
     private static Game instance = new Game();
     public static final int GAME_SIZE = 600;
     public static final int GAME_SPEED = 50;
-    public static boolean[][] board = new boolean[121][121];
+    public boolean[][] board = new boolean[121][121];
     Set<Player> players = Collections.synchronizedSet(new HashSet<Player>());
     AtomicBoolean gameRunning = new AtomicBoolean(false);
     AtomicBoolean paused = new AtomicBoolean(false);
 
     private Game() {}
 
-    public static Game getGame() {
+    public static Game getUnstartedGame() {
+        if (!instance.gameRunning.get() && instance.players.size() < 4)
+            return instance;
+        else {
+            instance = new Game();
+            return instance;
+        }
+    }
+
+    public static Game createGame() {
+        instance = new Game();
         return instance;
     }
 
     public void addPlayer(Player p) {
         players.add(p);
         System.out.println("Player " + players.size() + " has joined.");
+        for (Player cur : players)
+            broadcastLocation(this, cur);
         broadcastPlayerList(this, players);
     }
 
     public void removePlayer(Player p) {
-        players.remove(p);
-        System.out.println("Player disconnected.");
+        p.playerStatus = "Disconnected";
+        p.disconnect();
+        System.out.println("Player " + p.playerNo + " disconnected.");
         broadcastPlayerList(this, players);
     }
 
@@ -59,7 +71,7 @@ public class Game extends Thread
                 for (Player p : players) {
                     if (p.isAlive) {
                         if (p.movePlayer()) {
-                            broadcastMove(this, p);
+                            broadcastLocation(this, p);
                         } else {
                             broadcastPlayerList(this, players);
                         }
@@ -77,15 +89,10 @@ public class Game extends Thread
         }
     }
 
-    private void broadcastMove(Game g, Player p) {
+    private void broadcastLocation(Game g, Player p) {
         String json = p.toJson();
-        for (Player player : g.players) {
-            try {
-                player.client.getBasicRemote().sendText(json);
-            } catch (IOException e) {
-                // ignore
-            }
-        }
+        for (Player player : g.players)
+            player.sendTextToClient(json);
     }
 
     private void broadcastPlayerList(Game g, Set<Player> players) {
@@ -99,13 +106,8 @@ public class Game extends Thread
         JsonObject obj = Json.createObjectBuilder().add("playerlist", array).build();
         System.out.println("Playerlist: " + obj.toString());
 
-        for (Player player : g.players) {
-            try {
-                player.client.getBasicRemote().sendText(obj.toString());
-            } catch (IOException e) {
-                // ignore
-            }
-        }
+        for (Player player : g.players)
+            player.sendTextToClient(obj.toString());
     }
 
     public void startGame() {
