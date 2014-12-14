@@ -47,6 +47,10 @@ public class WebsocketHandler {
                 Game.getGame().pause();
                 System.out.println("Stopped the game");
             }
+            if (json.getString("message").equals("GAME_REQUEUE")) {
+                Player p = clients.get(session);
+                Game.getGame().removePlayer(p);
+            }
         }
         if (json.containsKey("direction")) {
             Player p = clients.get(session);

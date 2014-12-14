@@ -114,6 +114,10 @@ function pauseGame(){
 	sendText(JSON.stringify({"message":"GAME_PAUSE"}));
 }
 
+function requeue(){
+	sendText(JSON.stringify({"message":"GAME_REQUEUE"}));
+}
+
 window.onkeyup = function(e) {
     var key = e.keyCode ? e.keyCode : e.which;
     

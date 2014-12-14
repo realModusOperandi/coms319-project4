@@ -90,8 +90,6 @@ public class Player {
     private static boolean checkPosition(int x, int y) {
         int realXPosition = x / PLAYER_SIZE;
         int realYPosition = y / PLAYER_SIZE;
-        if (realYPosition == Game.GAME_SIZE / PLAYER_SIZE + 1 || realXPosition == Game.GAME_SIZE / PLAYER_SIZE + 1)
-            return true;
         return Game.board[realXPosition][realYPosition];
     }
 }

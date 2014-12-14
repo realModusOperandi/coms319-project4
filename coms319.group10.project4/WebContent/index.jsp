@@ -22,6 +22,7 @@
 			<div class="panel-footer">
 				<button type="button" class="btn btn-success" onclick="startGame()">Start Game</button>
 				<button type="button" class="btn btn-danger" onclick="pauseGame()">Pause Game</button>
+				<button type="button" class="btn btn-warning" onclick="requeue()">Requeue</button>
 			</div>
 		</div>
 	</div>
