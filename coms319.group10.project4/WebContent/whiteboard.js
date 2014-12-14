@@ -86,7 +86,6 @@ function drawImageBinary(blob) {
 }
 
 function updatePlayerList(json){
-	console.log("in update playerlist");
 	var list = "<li class='list-group-item active'>Players</li>";
 	for(i in json.playerlist){
 		var player = json.playerlist[i];
