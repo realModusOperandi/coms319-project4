@@ -31,7 +31,7 @@ public class Game extends Thread
     private Game() {}
 
     public static Game getUnstartedGame() {
-        if (!instance.gameRunning.get() && instance.players.size() < 4)
+        if (!instance.gameRunning.get() && instance.players.size() < PlayerFactory.MAX_PLAYERS)
             return instance;
         else {
             instance = new Game();
