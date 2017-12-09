@@ -1,4 +1,4 @@
-var wsUri = "ws://" + document.location.hostname + ":" + document.location.port + "/coms319.group10.project4/websocket";
+var wsUri = "ws://" + document.location.hostname + ":" + document.location.port + "/websocket";
 var websocket = new WebSocket(wsUri);
 websocket.binaryType = "arraybuffer";
 var output = document.getElementById("output");
