@@ -1,0 +1,4 @@
+build
+/.apt_generated/
+/.gradle/
+/bin/
